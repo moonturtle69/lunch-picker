@@ -724,7 +724,7 @@
 
 <footer>* 거리·도보시간은 사옥 좌표 기준 직선거리를 도보 평균속도(약 70m/분)로 환산한 추정값입니다. 즐겨찾기·삭제·직접추가 정보는 이 브라우저에만 저장됩니다.</footer>
 <div style="text-align:center; font-family:var(--font-mono); font-size:9px; color:var(--ink-3); opacity:0.6; margin-top:18px;">Made By Seonghyeon</div>
-<div id="realtimeHint" style="text-align:center; font-family:var(--font-mono); font-size:10px; color:var(--muted); margin-top:6px;">실시간 동기화 연결 중...</div>
+<div id="realtimeHint" style="text-align:center; font-family:var(--font-mono); font-size:10px; color:var(--muted); margin-top:6px;">Supabase 연결 중...</div>
 
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-box">
@@ -762,7 +762,7 @@
   </div>
 </div>
 
-<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ---------- 데이터 ----------
 const COMPANY = { lat: 37.4880028, lng: 127.1026639, address: "서울특별시 강남구 광평로 281" };
@@ -946,47 +946,181 @@ function buildMenuThumbs(r){
     <div class="menu-empty">대표 메뉴 예시</div>`;
 }
 
-// ---------- 상태 (서버 동기화) ----------
-const socket = window.io ? io() : null;
+// ---------- 상태 (Supabase 동기화) ----------
+const SUPABASE_URL = 'https://esntaqxzeipqwifwfgma.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_XjUibbFy54-krbnHnzktNg___lF82UM';
+const STATE_TABLE = 'lunch_state';
+const STATE_ROW_ID = 'global';
+const FALLBACK_STATE = { favorites: [], deleted: [], overrides: {}, custom: [] };
+
+const { createClient } = supabase;
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 let favorites = new Set();
 let deleted   = new Set();
 let overrides = {};   // { id: {name,cat,walkMin,rating,addr} }
 let custom    = [];   // [{id,name,cat,walkMin,rating,addr,isCustom:true}]
 let activeCat = "all";
 let favOnly = false;
+let currentPick = null;
+let saveTimer = null;
 
-function emitAction(action){
-  if(socket && socket.connected){
-    socket.emit('state:action', action);
-  }
+function normalizeState(state){
+  return {
+    favorites: Array.isArray(state?.favorites) ? state.favorites : [],
+    deleted: Array.isArray(state?.deleted) ? state.deleted : [],
+    overrides: state?.overrides && typeof state.overrides === 'object' && !Array.isArray(state.overrides) ? state.overrides : {},
+    custom: Array.isArray(state?.custom) ? state.custom : []
+  };
+}
+
+function currentState(){
+  return {
+    favorites: Array.from(favorites),
+    deleted: Array.from(deleted),
+    overrides,
+    custom
+  };
 }
 
 function applySyncedState(state){
-  favorites = new Set(state.favorites || []);
-  deleted = new Set(state.deleted || []);
-  overrides = state.overrides || {};
-  custom = state.custom || [];
+  const next = normalizeState(state);
+  favorites = new Set(next.favorites);
+  deleted = new Set(next.deleted);
+  overrides = next.overrides;
+  custom = next.custom;
   render();
   if(currentPick){
     showResult(currentPick);
   }
 }
 
-if(socket){
-  socket.on('state:init', applySyncedState);
-  socket.on('state:sync', applySyncedState);
+function setRealtimeHint(text){
+  const realtimeHint = document.getElementById('realtimeHint');
+  if(realtimeHint) realtimeHint.textContent = text;
 }
-const realtimeHint = document.getElementById('realtimeHint');
-if(socket){
-  socket.on('connect', ()=>{
-    if(realtimeHint) realtimeHint.textContent = '실시간 동기화 연결됨';
-  });
-  socket.on('disconnect', ()=>{
-    if(realtimeHint) realtimeHint.textContent = '연결이 끊겼습니다. 다시 연결을 시도하는 중...';
-  });
-} else {
-  if(realtimeHint) realtimeHint.textContent = '실시간 동기화용 서버가 필요합니다.';
+
+async function ensureStateRow(){
+  const { data, error } = await supabaseClient
+    .from(STATE_TABLE)
+    .select('id, data')
+    .eq('id', STATE_ROW_ID)
+    .maybeSingle();
+
+  if(error && error.code !== 'PGRST116') throw error;
+  if(data && data.data) return normalizeState(data.data);
+
+  const initial = normalizeState(FALLBACK_STATE);
+  const { error: upsertError } = await supabaseClient
+    .from(STATE_TABLE)
+    .upsert({ id: STATE_ROW_ID, data: initial });
+  if(upsertError) throw upsertError;
+  return initial;
 }
+
+async function saveState(){
+  const payload = { id: STATE_ROW_ID, data: currentState(), updated_at: new Date().toISOString() };
+  const { error } = await supabaseClient.from(STATE_TABLE).upsert(payload);
+  if(error) throw error;
+}
+
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    saveState().catch((err) => {
+      console.error('Failed to save state:', err);
+      setRealtimeHint('저장 실패. Supabase 설정을 확인하세요.');
+    });
+  }, 200);
+}
+
+function applyActionLocally(action){
+  switch(action.type){
+    case 'toggleFav': {
+      const id = String(action.id || '');
+      const next = new Set(favorites);
+      if(next.has(id)) next.delete(id); else next.add(id);
+      favorites = next;
+      break;
+    }
+    case 'delete': {
+      const id = String(action.id || '');
+      const next = new Set(deleted);
+      next.add(id);
+      deleted = next;
+      break;
+    }
+    case 'restore': {
+      const id = String(action.id || '');
+      const next = new Set(deleted);
+      next.delete(id);
+      deleted = next;
+      break;
+    }
+    case 'saveCustom': {
+      const id = String(action.id || '');
+      const next = normalizeRestaurantData(action.data || {});
+      custom = custom.map((item) => (item.id === id ? { ...item, ...next } : item));
+      break;
+    }
+    case 'saveOverride': {
+      const id = String(action.id || '');
+      const next = normalizeRestaurantData(action.data || {});
+      overrides = { ...overrides, [id]: next };
+      break;
+    }
+    case 'addCustom': {
+      const next = normalizeRestaurantData(action.data || {});
+      const id = `c${Date.now()}${Math.floor(Math.random() * 1000)}`;
+      custom = [...custom, { id, isCustom: true, rc: null, ...next }];
+      break;
+    }
+    default:
+      break;
+  }
+}
+
+function emitAction(action){
+  applyActionLocally(action);
+  render();
+  if(currentPick){
+    showResult(currentPick);
+  }
+  scheduleSave();
+}
+
+async function initRealtime(){
+  try{
+    setRealtimeHint('Supabase에서 상태를 불러오는 중...');
+    const state = await ensureStateRow();
+    applySyncedState(state);
+    setRealtimeHint('실시간 동기화 연결 중...');
+
+    supabaseClient
+      .channel('lunch_state_realtime')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: STATE_TABLE,
+        filter: `id=eq.${STATE_ROW_ID}`
+      }, (payload) => {
+        applySyncedState(payload.new?.data || FALLBACK_STATE);
+        setRealtimeHint('실시간 동기화 연결됨');
+      })
+      .subscribe((status) => {
+        if(status === 'SUBSCRIBED'){
+          setRealtimeHint('실시간 동기화 연결됨');
+        } else if(status === 'CHANNEL_ERROR' || status === 'TIMED_OUT'){
+          setRealtimeHint('연결 오류. Supabase RLS/테이블 설정을 확인하세요.');
+        }
+      });
+  } catch(err){
+    console.error('Supabase init error:', err);
+    setRealtimeHint('Supabase 연결 실패. SQL과 URL을 확인하세요.');
+  }
+}
+
+initRealtime();
 
 // 기본 데이터 + 수정본 + 직접추가 데이터를 합쳐 하나의 목록으로 반환
 function allRestaurants(){
@@ -1146,7 +1280,6 @@ const drawAgainBtn = document.getElementById("drawAgainBtn");
 const emptyNote = document.getElementById("emptyNote");
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-let currentPick = null;
 
 function pickRandom(){
   const pool = visibleList();
