@@ -38,6 +38,79 @@
     *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
   }
 
+  /* ---------- Office switcher ---------- */
+  .office-bar{
+    background:var(--ink-2);
+    border-bottom:1px solid var(--ink-3);
+  }
+  .office-bar-inner{
+    max-width:920px;
+    margin:0 auto;
+    padding:10px 24px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .office-label{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--muted);
+    letter-spacing:0.05em;
+    white-space:nowrap;
+  }
+  .office-tabs{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .office-tab{
+    font-family:var(--font-body);
+    font-size:12.5px;
+    font-weight:600;
+    background:transparent;
+    border:1.5px solid var(--ink-3);
+    color:var(--muted);
+    border-radius:16px;
+    padding:5px 12px;
+    cursor:pointer;
+    white-space:nowrap;
+    position:relative;
+  }
+  .office-tab.current{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:#2a2210;
+  }
+  .office-tab:not(.current):hover{
+    border-color:var(--muted);
+    color:var(--text-light);
+  }
+
+  /* ---------- Toast ---------- */
+  .toast{
+    position:fixed;
+    top:16px;
+    left:50%;
+    transform:translate(-50%, -14px);
+    background:var(--ink-3);
+    color:var(--text-light);
+    border:1px solid rgba(217,164,65,0.5);
+    border-radius:12px;
+    padding:10px 18px;
+    font-size:13px;
+    font-weight:600;
+    box-shadow:0 12px 28px rgba(0,0,0,0.4);
+    z-index:200;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .22s ease, transform .22s ease;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translate(-50%, 0);
+  }
+
   /* ---------- Header ---------- */
   .header{
     max-width:920px;
@@ -275,17 +348,32 @@
   .filter-bar{
     max-width:920px;
     margin:0 auto;
-    padding:0 24px 8px;
+    padding:2px 24px 12px;
     display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    flex-wrap:wrap;
+    flex-direction:column;
+    gap:10px;
   }
+  .filter-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .filter-row-cats{
+    justify-content:space-between;
+  }
+  .chips-scroll{
+    overflow-x:auto;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    flex:1;
+    min-width:0;
+  }
+  .chips-scroll::-webkit-scrollbar{display:none;}
   .chips{
     display:flex;
-    gap:8px;
-    flex-wrap:wrap;
+    gap:6px;
+    flex-wrap:nowrap;
+    padding-bottom:2px;
   }
   .chip{
     font-family:var(--font-body);
@@ -297,33 +385,98 @@
     border-radius:18px;
     padding:7px 14px;
     cursor:pointer;
+    white-space:nowrap;
+    flex-shrink:0;
+    transition:background .12s ease, border-color .12s ease;
   }
   .chip.active{
     background:var(--stamp-red);
     border-color:var(--stamp-red);
+  }
+  .chip:not(.active):hover{border-color:var(--gold);}
+
+  .filter-row-controls{
+    justify-content:space-between;
+    flex-wrap:wrap;
+    padding-top:8px;
+    border-top:1px solid var(--ink-3);
+  }
+  .control-cluster{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--ink-2);
+    border:1.5px solid var(--ink-3);
+    border-radius:20px;
+    padding:4px;
+  }
+  .control-group{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:0 6px 0 10px;
+  }
+  .control-label{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--muted);
+    letter-spacing:0.04em;
+    white-space:nowrap;
+  }
+  .select-wrap{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+  }
+  .sort-select{
+    font-family:var(--font-body);
+    font-size:13px;
+    font-weight:600;
+    background:transparent;
+    border:none;
+    color:var(--text-light);
+    padding:6px 20px 6px 4px;
+    cursor:pointer;
+    white-space:nowrap;
+    appearance:none;
+  }
+  .sort-select:focus{outline:none;}
+  .sort-select option{color:var(--text-dark);}
+  .select-chevron{
+    position:absolute;
+    right:2px;
+    font-size:10px;
+    color:var(--muted);
+    pointer-events:none;
+  }
+  .control-divider{
+    width:1px;
+    height:22px;
+    background:var(--ink-3);
+    flex-shrink:0;
   }
   .fav-toggle{
     font-family:var(--font-body);
     font-size:13px;
     font-weight:600;
     background:transparent;
-    border:1.5px solid var(--ink-3);
+    border:none;
     color:var(--text-light);
-    border-radius:18px;
-    padding:7px 14px;
+    border-radius:16px;
+    padding:6px 12px;
     cursor:pointer;
     white-space:nowrap;
   }
-  .fav-toggle.active{border-color:var(--gold); color:var(--gold);}
+  .fav-toggle.active{color:var(--gold);}
   .add-toggle{
     font-family:var(--font-body);
     font-size:13px;
-    font-weight:600;
+    font-weight:700;
     background:var(--stamp-red);
     border:1.5px solid var(--stamp-red);
     color:var(--text-light);
-    border-radius:18px;
-    padding:7px 14px;
+    border-radius:20px;
+    padding:8px 16px;
     cursor:pointer;
     white-space:nowrap;
   }
@@ -483,6 +636,7 @@
     opacity:0;
     transform:translateY(8px);
     animation:cardIn .4s ease forwards;
+    cursor:pointer;
   }
   .card.picked{
     outline:2px solid var(--gold);
@@ -665,9 +819,313 @@
     font-size:11px;
     color:var(--ink-3);
   }
+
+  /* ---------- Blank ticket (board entry) ---------- */
+  .board-card{
+    background:var(--paper-2);
+    border:2px dashed #B7A87F;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .board-card::before, .board-card::after{display:none;}
+  .board-card:hover{border-color:var(--stamp-red); box-shadow:0 12px 24px rgba(0,0,0,0.1);}
+  .board-card:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+  .board-card .card-cat{color:var(--stamp-red-dark);}
+  .board-card .card-name{color:var(--text-dark);}
+  .board-card-desc{
+    font-size:12.5px;
+    color:#6b6455;
+    line-height:1.5;
+  }
+  .board-hint{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--stamp-red-dark);
+    font-weight:600;
+  }
+
+  /* ---------- Board drawer ---------- */
+  .board-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,24,0.55);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease;
+    z-index:70;
+  }
+  .board-overlay.show{opacity:1; pointer-events:auto;}
+  .board-drawer{
+    position:fixed;
+    top:0; right:0;
+    height:100vh;
+    width:min(440px, 92vw);
+    background:var(--paper);
+    color:var(--text-dark);
+    box-shadow:-24px 0 50px rgba(0,0,0,0.4);
+    transform:translateX(100%);
+    transition:transform .3s cubic-bezier(.2,.8,.2,1);
+    z-index:71;
+    display:flex;
+    flex-direction:column;
+  }
+  .board-drawer.show{transform:translateX(0);}
+  .board-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 20px 14px;
+    border-bottom:2px dashed #C9BB9C;
+    flex-shrink:0;
+  }
+  .board-header h3{
+    font-family:var(--font-display);
+    font-size:20px;
+    margin:0;
+  }
+  .board-header p{
+    font-size:11.5px;
+    color:#8a8266;
+    margin:4px 0 0;
+  }
+  .board-close{
+    background:none;
+    border:none;
+    font-size:20px;
+    color:#8a8266;
+    cursor:pointer;
+    line-height:1;
+    padding:4px;
+  }
+  .board-close:hover{color:var(--stamp-red);}
+  .board-scroll{
+    flex:1;
+    overflow-y:auto;
+    padding:16px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .board-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .board-notes-title{
+    font-family:var(--font-display);
+    font-size:15px;
+    margin:0;
+    color:var(--text-dark);
+  }
+  /* ---------- Restaurant detail (in drawer) ---------- */
+  .rd-info{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    padding-bottom:14px;
+    border-bottom:2px dashed #C9BB9C;
+  }
+  .rd-cat-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .rd-name{
+    font-family:var(--font-display);
+    font-size:24px;
+    line-height:1.25;
+    margin:0;
+    color:var(--text-dark);
+  }
+  .rd-name-link{
+    text-decoration:none;
+    color:inherit;
+  }
+  .rd-name-link:hover .rd-name{color:var(--stamp-red);}
+  .rd-meta{
+    font-size:13px;
+    color:#5c5646;
+    line-height:1.5;
+  }
+  .rd-menu{
+    margin-top:2px;
+  }
+  .rd-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:6px;
+  }
+  .board-empty{
+    font-size:13px;
+    color:#8a8266;
+    text-align:center;
+    padding:30px 10px;
+  }
+  .board-item{
+    background:rgba(255,255,255,0.55);
+    border:1px solid #DDD0B2;
+    border-radius:12px;
+    padding:12px 14px;
+  }
+  .board-item-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:8px;
+    margin-bottom:5px;
+  }
+  .board-item-name{
+    font-weight:700;
+    font-size:13.5px;
+    color:var(--stamp-red-dark);
+  }
+  .board-item-time{
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    color:#a89f86;
+    white-space:nowrap;
+  }
+  .board-item-content{
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--text-dark);
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+  .board-item-actions{
+    display:flex;
+    gap:10px;
+    margin-top:8px;
+  }
+  .board-item-actions button{
+    background:none;
+    border:none;
+    font-size:11.5px;
+    color:#a89f86;
+    cursor:pointer;
+    text-decoration:underline;
+    padding:0;
+  }
+  .board-item-actions button:hover{color:var(--stamp-red);}
+  .board-verify{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed #DDD0B2;
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .board-verify input{
+    font-family:var(--font-body);
+    font-size:12.5px;
+    padding:7px 9px;
+    border:1.5px solid #C9BB9C;
+    border-radius:8px;
+    background:#fff;
+    color:var(--text-dark);
+    flex:1;
+    min-width:100px;
+  }
+  .board-verify-msg{
+    font-size:11px;
+    color:var(--stamp-red);
+    width:100%;
+  }
+  .board-mini-btn{
+    font-family:var(--font-body);
+    font-size:11.5px;
+    font-weight:700;
+    border:none;
+    border-radius:7px;
+    padding:7px 10px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .board-mini-btn.confirm{background:var(--stamp-red); color:var(--text-light);}
+  .board-mini-btn.cancel{background:#e4d8be; color:#5c5646;}
+  .board-edit-area{
+    width:100%;
+    font-family:var(--font-body);
+    font-size:13px;
+    padding:9px 10px;
+    border:1.5px solid #C9BB9C;
+    border-radius:8px;
+    background:#fff;
+    color:var(--text-dark);
+    resize:vertical;
+    min-height:64px;
+    margin-top:8px;
+  }
+  .board-form{
+    flex-shrink:0;
+    padding:14px 20px 18px;
+    border-top:2px dashed #C9BB9C;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .board-form-row{
+    display:flex;
+    gap:8px;
+  }
+  .board-form-row input{
+    font-family:var(--font-body);
+    font-size:13px;
+    padding:9px 11px;
+    border:1.5px solid #C9BB9C;
+    border-radius:8px;
+    background:#fff;
+    color:var(--text-dark);
+    flex:1;
+    min-width:0;
+  }
+  .board-form textarea{
+    font-family:var(--font-body);
+    font-size:13.5px;
+    padding:10px 11px;
+    border:1.5px solid #C9BB9C;
+    border-radius:8px;
+    background:#fff;
+    color:var(--text-dark);
+    resize:vertical;
+    min-height:60px;
+  }
+  .board-submit{
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:13.5px;
+    background:var(--stamp-red);
+    color:var(--text-light);
+    border:none;
+    border-radius:10px;
+    padding:10px 16px;
+    cursor:pointer;
+  }
+  .board-submit:hover{background:var(--stamp-red-dark);}
+  .board-form-hint{
+    font-size:10.5px;
+    color:#8a8266;
+  }
 </style>
 </head>
 <body>
+
+<div class="toast" id="toast"></div>
+
+<div class="office-bar">
+  <div class="office-bar-inner">
+    <span class="office-label">🏢 오피스</span>
+    <div class="office-tabs" id="officeTabs">
+      <button class="office-tab current" data-office="suseo">수서오피스</button>
+      <button class="office-tab" data-office="gangnam">기흥오피스</button>
+      <button class="office-tab" data-office="pangyo">영종오피스</button>
+    </div>
+  </div>
+</div>
 
 <div class="header">
   <div class="badge-row">
@@ -706,9 +1164,27 @@
 </div>
 
 <div class="filter-bar">
-  <div class="chips" id="chipRow"></div>
-  <div style="display:flex; gap:8px;">
-    <button class="fav-toggle" id="favToggle">⭐ 즐겨찾기만</button>
+  <div class="filter-row filter-row-cats">
+    <div class="chips-scroll">
+      <div class="chips" id="chipRow"></div>
+    </div>
+  </div>
+  <div class="filter-row filter-row-controls">
+    <div class="control-cluster">
+      <div class="control-group">
+        <span class="control-label">정렬</span>
+        <div class="select-wrap">
+          <select class="sort-select" id="sortSelect" aria-label="정렬 기준">
+            <option value="distance">거리순</option>
+            <option value="rating">별점순</option>
+            <option value="name">이름순</option>
+          </select>
+          <span class="select-chevron">⌄</span>
+        </div>
+      </div>
+      <div class="control-divider"></div>
+      <button class="fav-toggle" id="favToggle">⭐ 즐겨찾기만</button>
+    </div>
     <button class="add-toggle" id="addBtn">➕ 식당 추가</button>
   </div>
 </div>
@@ -724,7 +1200,6 @@
 
 <footer>* 거리·도보시간은 사옥 좌표 기준 직선거리를 도보 평균속도(약 70m/분)로 환산한 추정값입니다. 즐겨찾기·삭제·직접추가 정보는 이 브라우저에만 저장됩니다.</footer>
 <div style="text-align:center; font-family:var(--font-mono); font-size:9px; color:var(--ink-3); opacity:0.6; margin-top:18px;">Made By Seonghyeon</div>
-<div id="realtimeHint" style="text-align:center; font-family:var(--font-mono); font-size:10px; color:var(--muted); margin-top:6px;">Supabase 연결 중...</div>
 
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-box">
@@ -762,9 +1237,35 @@
   </div>
 </div>
 
+<div class="board-overlay" id="boardOverlay"></div>
+<aside class="board-drawer" id="boardDrawer" aria-hidden="true">
+  <div class="board-header">
+    <div>
+      <h3 id="boardTitle">📝 자유 메모</h3>
+      <p id="boardSubtitle">없는 맛집 제보, 하고 싶은 말을 익명으로 남겨보세요.</p>
+    </div>
+    <button class="board-close" id="boardClose" aria-label="닫기">✕</button>
+  </div>
+  <div class="board-scroll" id="boardScroll">
+    <div class="rd-info" id="rdInfo" style="display:none;"></div>
+    <div class="board-notes-title" id="boardNotesTitle" style="display:none;">📝 이 식당에 대한 자유 메모</div>
+    <div class="board-list" id="boardList"></div>
+  </div>
+  <form class="board-form" id="boardForm">
+    <div class="board-form-row">
+      <input type="text" id="boardName" placeholder="이름(닉네임)" maxlength="20" required>
+      <input type="password" id="boardPw" placeholder="비밀번호" maxlength="30" required>
+    </div>
+    <textarea id="boardContent" placeholder="메모를 남겨보세요" maxlength="500" required></textarea>
+    <div class="board-form-hint">비밀번호는 수정·삭제할 때 필요해요. 잊지 마세요!</div>
+    <button type="submit" class="board-submit">등록하기</button>
+  </form>
+</aside>
+
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-// ---------- 데이터 ----------
 const COMPANY = { lat: 37.4880028, lng: 127.1026639, address: "서울특별시 강남구 광평로 281" };
 const MAP_SEARCH_PREFIX = "수서";
 
@@ -946,200 +1447,55 @@ function buildMenuThumbs(r){
     <div class="menu-empty">대표 메뉴 예시</div>`;
 }
 
-// ---------- 상태 (Supabase 동기화) ----------
-const SUPABASE_URL = 'https://esntaqxzeipqwifwfgma.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_XjUibbFy54-krbnHnzktNg___lF82UM';
-const STATE_TABLE = 'lunch_state';
-const STATE_ROW_ID = 'global';
-const FALLBACK_STATE = { favorites: [], deleted: [], overrides: {}, custom: [] };
 
-const { createClient } = supabase;
-const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// ---------- 상태 & Supabase ----------
+const LS_FAV = "lunchTicket_favorites";
+const LS_DEL = "lunchTicket_deleted";
+const LS_OVR = "lunchTicket_overrides";
+const LS_CUS = "lunchTicket_custom";
+const LS_SORT = "lunchTicket_sortMode";
+const LS_BOARD = "lunchTicket_board";
 
-let favorites = new Set();
-let deleted   = new Set();
-let overrides = {};   // { id: {name,cat,walkMin,rating,addr} }
-let custom    = [];   // [{id,name,cat,walkMin,rating,addr,isCustom:true}]
+// Fill these in for the deployed version.
+const SUPABASE_URL = "https://esntaqxzeipqwifwfgma.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_XjUibbFy54-krbnHnzktNg___lF82UM";
+const TABLE_NAME = "restaurants";
+// 자유메모 게시판용 테이블. Supabase에 아래 스키마로 테이블을 만들어두면
+// 여러 사용자가 실시간으로 메모를 공유할 수 있습니다.
+//   create table board_notes (
+//     id text primary key,
+//     restaurant_id text,           -- null이면 상단 '자유 메모' 게시판, 값이 있으면 해당 식당 상세 메모
+//     name text not null,
+//     content text not null,
+//     password_hash text not null,
+//     created_at timestamptz default now(),
+//     updated_at timestamptz default now()
+//   );
+// (RLS를 켠다면 anon 역할에 select/insert/update/delete 권한을 열어주세요.
+//  비밀번호는 SHA-256 해시로만 저장/비교되며, 이 앱은 가벼운 사내 커뮤니티용이라
+//  강력한 보안이 필요한 정보는 남기지 않는 걸 권장합니다.)
+const BOARD_TABLE = "board_notes";
+
+let supabaseClient = null;
+let supabaseChannel = null;
+let boardChannel = null;
+let remoteMode = false;
+let records = [];
 let activeCat = "all";
 let favOnly = false;
+let sortMode = localStorage.getItem(LS_SORT) || "distance";
 let currentPick = null;
-let saveTimer = null;
+let editingId = null;
+let favorites = loadSet(LS_FAV);
+let deleted = loadSet(LS_DEL);
+let overrides = loadJSON(LS_OVR, {});
+let custom = loadJSON(LS_CUS, []);
+let boardNotes = [];
+let boardVerifiedId = null;
+let boardVerifiedMode = null;
+let activeBoardScope = null;
+let activeDrawerRestaurantId = null;
 
-function normalizeState(state){
-  return {
-    favorites: Array.isArray(state?.favorites) ? state.favorites : [],
-    deleted: Array.isArray(state?.deleted) ? state.deleted : [],
-    overrides: state?.overrides && typeof state.overrides === 'object' && !Array.isArray(state.overrides) ? state.overrides : {},
-    custom: Array.isArray(state?.custom) ? state.custom : []
-  };
-}
-
-function currentState(){
-  return {
-    favorites: Array.from(favorites),
-    deleted: Array.from(deleted),
-    overrides,
-    custom
-  };
-}
-
-function applySyncedState(state){
-  const next = normalizeState(state);
-  favorites = new Set(next.favorites);
-  deleted = new Set(next.deleted);
-  overrides = next.overrides;
-  custom = next.custom;
-  render();
-  if(currentPick){
-    showResult(currentPick);
-  }
-}
-
-function setRealtimeHint(text){
-  const realtimeHint = document.getElementById('realtimeHint');
-  if(realtimeHint) realtimeHint.textContent = text;
-}
-
-async function ensureStateRow(){
-  const { data, error } = await supabaseClient
-    .from(STATE_TABLE)
-    .select('id, data')
-    .eq('id', STATE_ROW_ID)
-    .maybeSingle();
-
-  if(error && error.code !== 'PGRST116') throw error;
-  if(data && data.data) return normalizeState(data.data);
-
-  const initial = normalizeState(FALLBACK_STATE);
-  const { error: upsertError } = await supabaseClient
-    .from(STATE_TABLE)
-    .upsert({ id: STATE_ROW_ID, data: initial });
-  if(upsertError) throw upsertError;
-  return initial;
-}
-
-async function saveState(){
-  const payload = { id: STATE_ROW_ID, data: currentState(), updated_at: new Date().toISOString() };
-  const { error } = await supabaseClient.from(STATE_TABLE).upsert(payload);
-  if(error) throw error;
-}
-
-function scheduleSave(){
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
-    saveState().catch((err) => {
-      console.error('Failed to save state:', err);
-      setRealtimeHint('저장 실패. Supabase 설정을 확인하세요.');
-    });
-  }, 200);
-}
-
-function applyActionLocally(action){
-  switch(action.type){
-    case 'toggleFav': {
-      const id = String(action.id || '');
-      const next = new Set(favorites);
-      if(next.has(id)) next.delete(id); else next.add(id);
-      favorites = next;
-      break;
-    }
-    case 'delete': {
-      const id = String(action.id || '');
-      const next = new Set(deleted);
-      next.add(id);
-      deleted = next;
-      break;
-    }
-    case 'restore': {
-      const id = String(action.id || '');
-      const next = new Set(deleted);
-      next.delete(id);
-      deleted = next;
-      break;
-    }
-    case 'saveCustom': {
-      const id = String(action.id || '');
-      const next = normalizeRestaurantData(action.data || {});
-      custom = custom.map((item) => (item.id === id ? { ...item, ...next } : item));
-      break;
-    }
-    case 'saveOverride': {
-      const id = String(action.id || '');
-      const next = normalizeRestaurantData(action.data || {});
-      overrides = { ...overrides, [id]: next };
-      break;
-    }
-    case 'addCustom': {
-      const next = normalizeRestaurantData(action.data || {});
-      const id = `c${Date.now()}${Math.floor(Math.random() * 1000)}`;
-      custom = [...custom, { id, isCustom: true, rc: null, ...next }];
-      break;
-    }
-    default:
-      break;
-  }
-}
-
-function emitAction(action){
-  applyActionLocally(action);
-  render();
-  if(currentPick){
-    showResult(currentPick);
-  }
-  scheduleSave();
-}
-
-async function initRealtime(){
-  try{
-    setRealtimeHint('Supabase에서 상태를 불러오는 중...');
-    const state = await ensureStateRow();
-    applySyncedState(state);
-    setRealtimeHint('실시간 동기화 연결 중...');
-
-    supabaseClient
-      .channel('lunch_state_realtime')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: STATE_TABLE,
-        filter: `id=eq.${STATE_ROW_ID}`
-      }, (payload) => {
-        applySyncedState(payload.new?.data || FALLBACK_STATE);
-        setRealtimeHint('실시간 동기화 연결됨');
-      })
-      .subscribe((status) => {
-        if(status === 'SUBSCRIBED'){
-          setRealtimeHint('실시간 동기화 연결됨');
-        } else if(status === 'CHANNEL_ERROR' || status === 'TIMED_OUT'){
-          setRealtimeHint('연결 오류. Supabase RLS/테이블 설정을 확인하세요.');
-        }
-      });
-  } catch(err){
-    console.error('Supabase init error:', err);
-    setRealtimeHint('Supabase 연결 실패. SQL과 URL을 확인하세요.');
-  }
-}
-
-initRealtime();
-
-// 기본 데이터 + 수정본 + 직접추가 데이터를 합쳐 하나의 목록으로 반환
-function allRestaurants(){
-  const base = BASE_RESTAURANTS.map(r=>{
-    const o = overrides[r.id];
-    if(!o) return r;
-    const merged = Object.assign({}, r, o);
-    if(o.walkMin != null) merged.dist = null; // 수동으로 도보시간을 바꾼 경우 정확한 거리(m) 표시는 생략
-    return merged;
-  });
-  const customList = custom.map(c=> Object.assign({dist:null}, c));
-  return base.concat(customList).sort((a,b)=>{
-    const ka = a.dist != null ? a.dist : a.walkMin*70;
-    const kb = b.dist != null ? b.dist : b.walkMin*70;
-    return ka - kb;
-  });
-}
-
-// ---------- 렌더 ----------
 const grid = document.getElementById("grid");
 const chipRow = document.getElementById("chipRow");
 const noResult = document.getElementById("noResult");
@@ -1147,127 +1503,7 @@ const countLine = document.getElementById("countLine");
 const trashList = document.getElementById("trashList");
 const trashSummary = document.getElementById("trashSummary");
 const favToggle = document.getElementById("favToggle");
-
-function buildChips(){
-  const cats = ["all", ...Object.keys(CATS)];
-  chipRow.innerHTML = cats.map(c=>{
-    const label = c==="all" ? "전체" : `${CATS[c].icon} ${CATS[c].label}`;
-    return `<button class="chip ${c===activeCat?'active':''}" data-cat="${c}">${label}</button>`;
-  }).join("");
-  chipRow.querySelectorAll(".chip").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      activeCat = btn.dataset.cat;
-      buildChips();
-      render();
-    });
-  });
-}
-
-function visibleList(){
-  return allRestaurants().filter(r=>{
-    if(deleted.has(r.id)) return false;
-    if(activeCat!=="all" && r.cat!==activeCat) return false;
-    if(favOnly && !favorites.has(r.id)) return false;
-    return true;
-  });
-}
-
-function findRestaurant(id){
-  return allRestaurants().find(r=>r.id===id) || null;
-}
-
-function cardHTML(r){
-  const fav = favorites.has(r.id);
-  const selected = currentPick && currentPick.id === r.id;
-  const cat = CATS[r.cat];
-  const mapUrl = mapUrlFor(r, 'naver');
-  const distText = (r.dist != null) ? `도보 ${r.walkMin}분 · ${r.dist}m` : `도보 ${r.walkMin}분`;
-  const ratingText = (r.rating != null) ? `★ ${r.rating.toFixed(1)}${r.rc ? ' ('+r.rc+')' : ''}` : '★ –';
-  return `
-  <div class="card ${selected ? 'picked' : ''}" data-id="${r.id}">
-    <div class="card-top">
-      <div>
-        <div class="card-cat">${cat.icon} ${cat.label}${r.isCustom ? '<span class="custom-tag">직접추가</span>' : ''}</div>
-        <a class="card-name-link" href="${mapUrl}" target="_blank" rel="noopener" aria-label="${escapeHTML(r.name)} 지도 열기"><div class="card-name">${escapeHTML(r.name)}</div></a>
-      </div>
-      <button class="star-btn ${fav?'active':''}" data-action="fav" data-id="${r.id}" aria-label="즐겨찾기">${fav?'★':'☆'}</button>
-    </div>
-    <div class="divider"></div>
-    <div class="card-row">
-      <span class="card-dist">${distText}</span>
-      <span class="card-rating">${ratingText}</span>
-    </div>
-    <div class="card-actions">
-      <button class="ticket-btn ${selected ? 'active' : ''}" data-action="ticket" data-id="${r.id}">🎫 선택</button>
-      <span>
-        <button class="edit-btn" data-action="edit" data-id="${r.id}">수정</button>
-        <button class="del-btn" data-action="del" data-id="${r.id}">삭제</button>
-      </span>
-    </div>
-  </div>`;
-}
-
-function render(){
-  const list = visibleList();
-  grid.innerHTML = list.map(cardHTML).join("");
-  noResult.style.display = list.length ? "none" : "block";
-  countLine.textContent = `표시 중 ${list.length}곳 · 즐겨찾기 ${favorites.size}곳 · 삭제 ${deleted.size}곳`;
-
-  grid.querySelectorAll('[data-action="fav"]').forEach(btn=>{
-    btn.addEventListener("click", ()=> toggleFav(btn.dataset.id));
-  });
-  grid.querySelectorAll('[data-action="ticket"]').forEach(btn=>{
-    btn.addEventListener("click", ()=> {
-      const r = findRestaurant(btn.dataset.id);
-      if(!r) return;
-      showResult(r);
-      resultTicket.classList.add('show');
-      resultTicket.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block: 'start'});
-    });
-  });
-  grid.querySelectorAll('[data-action="del"]').forEach(btn=>{
-    btn.addEventListener("click", ()=> deleteItem(btn.dataset.id));
-  });
-  grid.querySelectorAll('[data-action="edit"]').forEach(btn=>{
-    btn.addEventListener("click", ()=> openModal("edit", btn.dataset.id));
-  });
-
-  renderTrash();
-}
-
-function toggleFav(id){
-  emitAction({ type: 'toggleFav', id });
-}
-
-function deleteItem(id){
-  emitAction({ type: 'delete', id });
-}
-
-function restoreItem(id){
-  emitAction({ type: 'restore', id });
-}
-
-function renderTrash(){
-  const items = allRestaurants().filter(r=>deleted.has(r.id));
-  trashSummary.textContent = `🗑 삭제한 식당 (${items.length})`;
-  trashList.innerHTML = items.map(r=>`
-    <div class="trash-item">
-      <span>${CATS[r.cat].icon} ${r.name}</span>
-      <button class="restore-btn" data-id="${r.id}">복구</button>
-    </div>
-  `).join("") || `<div style="color:var(--muted); font-size:13px;">삭제한 식당이 없어요.</div>`;
-  trashList.querySelectorAll(".restore-btn").forEach(btn=>{
-    btn.addEventListener("click", ()=> restoreItem(btn.dataset.id));
-  });
-}
-
-favToggle.addEventListener("click", ()=>{
-  favOnly = !favOnly;
-  favToggle.classList.toggle("active", favOnly);
-  render();
-});
-
-// ---------- 식권 뽑기 (룰렛) ----------
+const sortSelect = document.getElementById("sortSelect");
 const drawBtn = document.getElementById("drawBtn");
 const resultTicket = document.getElementById("resultTicket");
 const resultWindow = document.getElementById("resultWindow");
@@ -1278,91 +1514,6 @@ const resultMenuBtn = document.getElementById("resultMenuBtn");
 const resultMenuPanel = document.getElementById("resultMenuPanel");
 const drawAgainBtn = document.getElementById("drawAgainBtn");
 const emptyNote = document.getElementById("emptyNote");
-
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-function pickRandom(){
-  const pool = visibleList();
-  resultTicket.classList.add("show");
-  if(pool.length===0){
-    emptyNote.style.display = "block";
-    resultWindow.textContent = "선택 가능한 식당 없음";
-    resultName.innerHTML = "";
-    resultMeta.textContent = "";
-    resultFavBtn.style.display = "none";
-    resultMenuBtn.style.display = "none";
-    resultMenuPanel.classList.remove('show');
-    resultMenuPanel.innerHTML = '';
-    drawAgainBtn.style.display = "none";
-    return;
-  }
-  emptyNote.style.display = "none";
-  resultFavBtn.style.display = "inline-flex";
-  resultMenuBtn.style.display = "inline-flex";
-  drawAgainBtn.style.display = "inline-flex";
-
-  const final = pool[Math.floor(Math.random()*pool.length)];
-
-  if(reduceMotion){
-    showResult(final);
-    return;
-  }
-
-  drawBtn.disabled = true;
-  const delays = [70,70,80,90,100,120,140,170,210,260,330,420];
-  let i = 0;
-  function tick(){
-    const r = pool[Math.floor(Math.random()*pool.length)];
-    resultWindow.textContent = "뽑는 중...";
-    resultName.innerHTML = `${CATS[r.cat].icon} ${r.name}`;
-    resultMeta.textContent = `도보 ${r.walkMin}분`;
-    i++;
-    if(i < delays.length){
-      setTimeout(tick, delays[i]);
-    } else {
-      showResult(final);
-      drawBtn.disabled = false;
-    }
-  }
-  tick();
-}
-
-function showResult(r){
-  currentPick = r;
-  const distPart = (r.dist != null) ? `도보 ${r.walkMin}분 · ${r.dist}m` : `도보 ${r.walkMin}분`;
-  const ratingPart = (r.rating != null) ? `★ ${r.rating.toFixed(1)}` : '★ –';
-  resultWindow.textContent = `TICKET NO.${String(Math.floor(Math.random()*900+100))}`;
-  resultName.innerHTML = `<a class="result-name-link" href="${mapUrlFor(r, 'naver')}" target="_blank" rel="noopener">${escapeHTML(CATS[r.cat].icon + ' ' + r.name)}</a> <span class="result-stamp pop" id="stampEl">선택완료</span>`;
-  resultMeta.textContent = `${distPart} · ${ratingPart}${r.addr ? ' · '+r.addr : ''}`;
-  resultFavBtn.classList.toggle("active", favorites.has(r.id));
-  resultFavBtn.textContent = favorites.has(r.id) ? "★ 즐겨찾기 완료" : "⭐ 즐겨찾기";
-  resultMenuBtn.textContent = '🍽 대표 메뉴 보기';
-  resultMenuBtn.setAttribute('aria-expanded', 'false');
-  resultMenuPanel.classList.remove('show');
-  resultMenuPanel.setAttribute('aria-hidden', 'true');
-  resultMenuPanel.innerHTML = buildMenuThumbs(r);
-  render();
-}
-
-drawBtn.addEventListener("click", pickRandom);
-drawAgainBtn.addEventListener("click", pickRandom);
-resultFavBtn.addEventListener("click", ()=>{
-  if(!currentPick) return;
-  toggleFav(currentPick.id);
-  showResult(currentPick);
-});
-resultMenuBtn.addEventListener('click', ()=>{
-  if(!currentPick) return;
-  const open = resultMenuPanel.classList.toggle('show');
-  resultMenuBtn.setAttribute('aria-expanded', String(open));
-  resultMenuPanel.setAttribute('aria-hidden', String(!open));
-  resultMenuBtn.textContent = open ? '🍽 대표 메뉴 닫기' : '🍽 대표 메뉴 보기';
-  if(open && !resultMenuPanel.innerHTML){
-    resultMenuPanel.innerHTML = buildMenuThumbs(currentPick);
-  }
-});
-
-// ---------- 식당 추가 / 수정 모달 ----------
 const addBtn = document.getElementById("addBtn");
 const modalOverlay = document.getElementById("modalOverlay");
 const modalTitle = document.getElementById("modalTitle");
@@ -1374,86 +1525,1055 @@ const fCat = document.getElementById("fCat");
 const fWalk = document.getElementById("fWalk");
 const fRating = document.getElementById("fRating");
 const fAddr = document.getElementById("fAddr");
-const mapSearchBtn = document.getElementById('mapSearchBtn');
+const mapSearchBtn = document.getElementById("mapSearchBtn");
+const statusLine = document.querySelectorAll(".subtitle")[1];
+const footer = document.querySelector("footer");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const toastEl = document.getElementById("toast");
+const officeTabs = document.getElementById("officeTabs");
+const boardOverlay = document.getElementById("boardOverlay");
+const boardDrawer = document.getElementById("boardDrawer");
+const boardClose = document.getElementById("boardClose");
+const boardTitle = document.getElementById("boardTitle");
+const boardSubtitle = document.getElementById("boardSubtitle");
+const boardScroll = document.getElementById("boardScroll");
+const rdInfo = document.getElementById("rdInfo");
+const boardNotesTitle = document.getElementById("boardNotesTitle");
+const boardList = document.getElementById("boardList");
+const boardForm = document.getElementById("boardForm");
+const boardName = document.getElementById("boardName");
+const boardPw = document.getElementById("boardPw");
+const boardContent = document.getElementById("boardContent");
 
-fCat.innerHTML = Object.entries(CATS).map(([k,v])=>`<option value="${k}">${v.icon} ${v.label}</option>`).join("");
-[fName, fAddr].forEach(el => el.addEventListener('input', updateMapSearchLink));
-updateMapSearchLink();
-if(mapSearchBtn){
-  mapSearchBtn.addEventListener('click', (e)=>{
-    if(mapSearchBtn.classList.contains('disabled')) e.preventDefault();
+function loadSet(key){
+  try { return new Set(JSON.parse(localStorage.getItem(key) || "[]")); }
+  catch(e) { return new Set(); }
+}
+function saveSet(key, set){
+  try { localStorage.setItem(key, JSON.stringify(Array.from(set))); }
+  catch(e) {}
+}
+function loadJSON(key, fallback){
+  try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+  catch(e) { return fallback; }
+}
+function saveJSON(key, value){
+  try { localStorage.setItem(key, JSON.stringify(value)); }
+  catch(e) {}
+}
+
+function setStatus(msg){
+  if(statusLine) statusLine.textContent = msg;
+}
+function setFooterMessage(){
+  if(!footer) return;
+  footer.textContent = "* \uAC70\uB9AC\u00B7\uB3C4\uBCF4\uC2DC\uAC04\uC740 \uC0AC\uCCAD \uC88C\uD45C \uAE30\uC900 \uC9C1\uC120\uAC70\uB9AC\uC744 \uB3C4\uBCF4 \uD3C9\uADE0\uC18D\uB3C4(\uC57D 70m/\uBD84)\uB85C \uD658\uC0B0\uD55C \uCD94\uC815\uCE58\uC785\uB2C8\uB2E4. \uC990\uACA8\uCC3E\uAE30\uC640 \uB79C\uB364\uC120\uD0DD\uC740 \uBE0C\uB77C\uC6B0\uC800\uBCC4\uB85C \uC800\uC7A5\uB429\uB2C8\uB2E4. \uC2DD\uB2F9 \uB370\uC774\uD130\uB294 Supabase\uC5D0 \uC800\uC7A5\uB418\uACE0 \uC2E4\uC2DC\uAC04\uC73C\uB85C \uB3D9\uAE30\uD654\uB429\uB2C8\uB2E4.";
+}
+
+function isRemoteConfigured(){
+  return Boolean(window.supabase && window.supabase.createClient && SUPABASE_URL && SUPABASE_ANON_KEY);
+}
+
+let toastTimer = null;
+function showToast(msg){
+  if(!toastEl) return;
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+}
+
+async function sha256Hex(text){
+  if(window.crypto && window.crypto.subtle){
+    try{
+      const enc = new TextEncoder().encode(text);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }catch(e){ /* fall through to non-secure fallback below (e.g. file:// context) */ }
+  }
+  // crypto.subtle을 쓸 수 없는 환경(예: file://로 직접 열었을 때)을 위한 대체 해시.
+  // 암호학적으로 안전하지 않으니, 실제 배포(https)에서는 위 SHA-256 경로가 사용됩니다.
+  let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for(let i = 0; i < text.length; i++){
+    const ch = text.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (h1 >>> 0).toString(16).padStart(8, '0') + (h2 >>> 0).toString(16).padStart(8, '0');
+}
+
+function formatBoardTime(iso){
+  if(!iso) return '';
+  const d = new Date(iso);
+  if(isNaN(d.getTime())) return '';
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function normalizeRecord(r){
+  const lat = r.lat === null || r.lat === undefined || r.lat === "" ? null : Number(r.lat);
+  const lng = r.lng === null || r.lng === undefined || r.lng === "" ? null : Number(r.lng);
+  const dist = (lat !== null && lng !== null)
+    ? Math.round(haversine(COMPANY.lat, COMPANY.lng, lat, lng))
+    : (r.dist !== null && r.dist !== undefined ? Number(r.dist) : null);
+  const walkSource = r.walkMin !== undefined ? r.walkMin : r.walk_min;
+  const walkMin = walkSource !== undefined && walkSource !== null && walkSource !== ""
+    ? Number(walkSource)
+    : (dist !== null ? Math.max(1, Math.round(dist / 70)) : 1);
+  return {
+    id: String(r.id),
+    name: r.name || "",
+    cat: r.cat || "etc",
+    lat,
+    lng,
+    rating: r.rating === null || r.rating === undefined || r.rating === "" ? null : Number(r.rating),
+    rc: r.rc === null || r.rc === undefined || r.rc === "" ? null : Number(r.rc),
+    addr: r.addr || "",
+    walkMin,
+    dist,
+    isCustom: Boolean(r.isCustom || r.is_custom),
+    isDeleted: Boolean(r.isDeleted || r.is_deleted)
+  };
+}
+
+function sortByTravel(a, b){
+  const da = a.dist !== null && a.dist !== undefined ? a.dist : a.walkMin * 70;
+  const db = b.dist !== null && b.dist !== undefined ? b.dist : b.walkMin * 70;
+  return da - db;
+}
+
+function buildLocalRecords(){
+  const base = BASE_RESTAURANTS.map(r => {
+    const merged = Object.assign({}, r, overrides[r.id] || {}, { isCustom: false, isDeleted: deleted.has(r.id) });
+    return normalizeRecord(merged);
+  });
+  const extra = custom.map(c => normalizeRecord(Object.assign({}, c, { isCustom: true, isDeleted: deleted.has(c.id) })));
+  return base.concat(extra).sort(sortByTravel);
+}
+
+function refreshRecords(){
+  if(!remoteMode){
+    records = buildLocalRecords();
+  } else {
+    records = records.map(normalizeRecord).sort(sortByTravel);
+  }
+}
+
+function getVisibleRecords(){
+  refreshRecords();
+  return sortVisibleList(records.filter(r => {
+    if(r.isDeleted) return false;
+    if(activeCat !== "all" && r.cat !== activeCat) return false;
+    if(favOnly && !favorites.has(r.id)) return false;
+    return true;
+  }));
+}
+
+function findRecord(id){
+  refreshRecords();
+  return records.find(r => r.id === id) || null;
+}
+
+function countDeleted(){
+  refreshRecords();
+  return records.filter(r => r.isDeleted).length;
+}
+
+function sortValueDistance(r){
+  return r.dist !== null && r.dist !== undefined ? r.dist : r.walkMin * 70;
+}
+
+function compareBySortMode(a, b){
+  if(sortMode === "rating"){
+    const ar = a.rating === null || a.rating === undefined ? -1 : Number(a.rating);
+    const br = b.rating === null || b.rating === undefined ? -1 : Number(b.rating);
+    if(br !== ar) return br - ar;
+    const distDiff = sortValueDistance(a) - sortValueDistance(b);
+    if(distDiff !== 0) return distDiff;
+    return a.name.localeCompare(b.name, 'ko');
+  }
+  if(sortMode === "name"){
+    const nameDiff = a.name.localeCompare(b.name, 'ko');
+    if(nameDiff !== 0) return nameDiff;
+    const ratingDiff = (b.rating ?? -1) - (a.rating ?? -1);
+    if(ratingDiff !== 0) return ratingDiff;
+    return sortValueDistance(a) - sortValueDistance(b);
+  }
+  const distDiff = sortValueDistance(a) - sortValueDistance(b);
+  if(distDiff !== 0) return distDiff;
+  const ratingDiff = (b.rating ?? -1) - (a.rating ?? -1);
+  if(ratingDiff !== 0) return ratingDiff;
+  return a.name.localeCompare(b.name, 'ko');
+}
+
+function sortVisibleList(list){
+  return list.slice().sort(compareBySortMode);
+}
+
+function currentRecordsForTrash(){
+  refreshRecords();
+  return records.filter(r => r.isDeleted).sort(sortByTravel);
+}
+
+function updateMapLink(){
+  const query = buildSearchQuery({ name: fName.value.trim(), addr: fAddr.value.trim() });
+  if(!query){
+    mapSearchBtn.href = "#";
+    mapSearchBtn.classList.add("disabled");
+    return;
+  }
+  mapSearchBtn.href = `https://map.naver.com/p/search/${encodeURIComponent(query)}`;
+  mapSearchBtn.classList.remove("disabled");
+}
+
+function buildChips(){
+  const cats = ["all", ...Object.keys(CATS)];
+  chipRow.innerHTML = cats.map(c => {
+    const label = c === "all" ? "전체" : `${CATS[c].icon} ${CATS[c].label}`;
+    return `<button class="chip ${c === activeCat ? 'active' : ''}" data-cat="${c}">${label}</button>`;
+  }).join("");
+  chipRow.querySelectorAll(".chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeCat = btn.dataset.cat;
+      buildChips();
+      render();
+    });
   });
 }
 
-let editingId = null;
+function boardTicketHTML(){
+  return `
+  <div class="card board-card" id="boardCard" data-action="board-open" tabindex="0" role="button" aria-label="자유 메모 열기">
+    <div class="card-top">
+      <div>
+        <div class="card-cat">📮</div>
+        <div class="card-name">자유 메모</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="card-row" style="display:block;">
+      <span class="board-card-desc">목록에 없는 맛집 제보나 하고 싶은 말을 익명으로 남겨보세요.</span>
+    </div>
+    <div class="card-actions" style="justify-content:flex-start;">
+      <span class="board-hint">클릭해서 메모 남기기 →</span>
+    </div>
+  </div>`;
+}
+
+function cardHTML(r){
+  const fav = favorites.has(r.id);
+  const selected = currentPick && currentPick.id === r.id;
+  const cat = CATS[r.cat] || CATS.etc;
+  const mapUrl = mapUrlFor(r, 'naver');
+  const distText = (r.dist !== null && r.dist !== undefined) ? `\uB3C4\uBCF4 ${r.walkMin}\uBD84 \u00B7 ${r.dist}m` : `\uB3C4\uBCF4 ${r.walkMin}\uBD84`;
+  const ratingText = (r.rating !== null && r.rating !== undefined) ? `★ ${Number(r.rating).toFixed(1)}${r.rc ? ' (' + r.rc + ')' : ''}` : '★ –';
+  return `
+  <div class="card ${selected ? 'picked' : ''}" data-id="${r.id}" tabindex="0" role="button" aria-label="${escapeHTML(r.name)} 상세보기">
+    <div class="card-top">
+      <div>
+        <div class="card-cat">${cat.icon} ${cat.label}${r.isCustom ? '<span class="custom-tag">\uC9C1\uC811\uCD94\uAC00</span>' : ''}</div>
+        <a class="card-name-link" href="${mapUrl}" target="_blank" rel="noopener" aria-label="${escapeHTML(r.name)} \uC9C0\uB3C4 \uC5F4\uAE30"><div class="card-name">${escapeHTML(r.name)}</div></a>
+      </div>
+      <button class="star-btn ${fav ? 'active' : ''}" data-action="fav" data-id="${r.id}" aria-label="\uC990\uACA8\uCC3E\uAE30">${fav ? '★' : '☆'}</button>
+    </div>
+    <div class="divider"></div>
+    <div class="card-row">
+      <span class="card-dist">${distText}</span>
+      <span class="card-rating">${ratingText}</span>
+    </div>
+    <div class="card-actions">
+      <button class="ticket-btn ${selected ? 'active' : ''}" data-action="ticket" data-id="${r.id}">🎫 \uC120\uD0DD</button>
+      <span>
+        <button class="edit-btn" data-action="edit" data-id="${r.id}">\uC218\uC815</button>
+        <button class="del-btn" data-action="del" data-id="${r.id}">\uC0AD\uC81C</button>
+      </span>
+    </div>
+  </div>`;
+}
+
+function renderTrash(){
+  const items = currentRecordsForTrash();
+  trashSummary.textContent = `🗑 \uC0AD\uC81C\uD55C \uC2DD\uB2F9 (${items.length})`;
+  trashList.innerHTML = items.map(r => `
+    <div class="trash-item">
+      <span>${(CATS[r.cat] || CATS.etc).icon} ${escapeHTML(r.name)}</span>
+      <button class="restore-btn" data-id="${r.id}">\uBCF5\uAD6C</button>
+    </div>
+  `).join("") || `<div style="color:var(--muted); font-size:13px;">\uC0AD\uC81C\uD55C \uC2DD\uB2F9\uC774 \uC5C6\uC5B4\uC694.</div>`;
+  trashList.querySelectorAll('.restore-btn').forEach(btn => {
+    btn.addEventListener('click', () => restoreItem(btn.dataset.id));
+  });
+}
+
+function render(){
+  refreshRecords();
+  const list = sortVisibleList(records.filter(r => !r.isDeleted && (activeCat === 'all' || r.cat === activeCat) && (!favOnly || favorites.has(r.id))));
+  grid.innerHTML = boardTicketHTML() + list.map(cardHTML).join("");
+  noResult.style.display = list.length ? 'none' : 'block';
+  countLine.textContent = `\uD45C\uC2DC \uC911 ${list.length}\uAC1C \u00B7 \uC990\uACA8\uCC3E\uAE30 ${favorites.size}\uAC1C \u00B7 \uC0AD\uC81C ${countDeleted()}\uAC1C`;
+
+  const boardCardEl = document.getElementById('boardCard');
+  if(boardCardEl){
+    boardCardEl.addEventListener('click', openGeneralBoard);
+    boardCardEl.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openGeneralBoard(); }
+    });
+  }
+  grid.querySelectorAll('.card[data-id]').forEach(cardEl => {
+    cardEl.addEventListener('click', (e) => {
+      if(e.target.closest('button, a')) return;
+      openRestaurantDrawer(cardEl.dataset.id);
+    });
+    cardEl.addEventListener('keydown', (e) => {
+      if((e.key === 'Enter' || e.key === ' ') && e.target === cardEl){
+        e.preventDefault();
+        openRestaurantDrawer(cardEl.dataset.id);
+      }
+    });
+  });
+  grid.querySelectorAll('[data-action="fav"]').forEach(btn => btn.addEventListener('click', () => toggleFav(btn.dataset.id)));
+  grid.querySelectorAll('[data-action="ticket"]').forEach(btn => btn.addEventListener('click', () => {
+    const r = findRecord(btn.dataset.id);
+    if(r) showResult(r);
+  }));
+  grid.querySelectorAll('[data-action="del"]').forEach(btn => btn.addEventListener('click', () => deleteItem(btn.dataset.id)));
+  grid.querySelectorAll('[data-action="edit"]').forEach(btn => btn.addEventListener('click', () => openModal('edit', btn.dataset.id)));
+
+  renderTrash();
+
+  if(currentPick){
+    const live = findRecord(currentPick.id);
+    if(live && !live.isDeleted){
+      resultFavBtn.classList.toggle('active', favorites.has(live.id));
+      resultFavBtn.textContent = favorites.has(live.id) ? '★ \uC990\uACA8\uCC3E\uAE30 \uC644\uB8CC' : '⭐ \uC990\uACA8\uCC3E\uAE30';
+    }
+  }
+}
+
+function toggleFav(id){
+  if(favorites.has(id)) favorites.delete(id); else favorites.add(id);
+  saveSet(LS_FAV, favorites);
+  render();
+}
+
+function persistLocalRecord(item){
+  const baseMatch = BASE_RESTAURANTS.some(r => r.id === item.id);
+  if(baseMatch){
+    overrides[item.id] = {
+      name: item.name,
+      cat: item.cat,
+      walkMin: item.walkMin,
+      rating: item.rating,
+      addr: item.addr,
+      lat: item.lat,
+      lng: item.lng,
+      rc: item.rc
+    };
+    saveJSON(LS_OVR, overrides);
+  } else {
+    const payload = {
+      id: item.id,
+      name: item.name,
+      cat: item.cat,
+      walkMin: item.walkMin,
+      rating: item.rating,
+      addr: item.addr,
+      lat: item.lat,
+      lng: item.lng,
+      rc: item.rc,
+      isCustom: true
+    };
+    const idx = custom.findIndex(c => c.id === item.id);
+    if(idx >= 0) custom[idx] = payload; else custom.push(payload);
+    saveJSON(LS_CUS, custom);
+  }
+}
+
+async function saveRecord(item){
+  if(remoteMode && supabaseClient){
+    const payload = {
+      id: item.id,
+      name: item.name,
+      cat: item.cat,
+      walk_min: item.walkMin,
+      rating: item.rating,
+      rc: item.rc,
+      addr: item.addr,
+      lat: item.lat,
+      lng: item.lng,
+      is_custom: Boolean(item.isCustom),
+      is_deleted: Boolean(item.isDeleted)
+    };
+    const { error } = await supabaseClient.from(TABLE_NAME).upsert(payload, { onConflict: 'id' });
+    if(error) throw error;
+    const norm = normalizeRecord(item);
+    const idx = records.findIndex(r => r.id === norm.id);
+    if(idx >= 0) records[idx] = norm; else records.push(norm);
+    records.sort(sortByTravel);
+  } else {
+    persistLocalRecord(item);
+    records = buildLocalRecords();
+  }
+}
+
+async function setDeletedState(id, isDeleted){
+  if(remoteMode && supabaseClient){
+    const { error } = await supabaseClient.from(TABLE_NAME).update({ is_deleted: isDeleted }).eq('id', id);
+    if(error) throw error;
+    const idx = records.findIndex(r => r.id === id);
+    if(idx >= 0) records[idx].isDeleted = isDeleted;
+    records.sort(sortByTravel);
+  } else {
+    if(isDeleted) deleted.add(id); else deleted.delete(id);
+    saveSet(LS_DEL, deleted);
+    records = buildLocalRecords();
+  }
+}
+
+function deleteItem(id){
+  setDeletedState(id, true).then(() => {
+    if(currentPick && currentPick.id === id) currentPick = null;
+    render();
+  }).catch(err => setStatus(`\uC0AD\uC81C \uC2E4\uD328: ${err.message}`));
+}
+
+function restoreItem(id){
+  setDeletedState(id, false).then(() => render()).catch(err => setStatus(`\uBCF5\uAD6C \uC2E4\uD328: ${err.message}`));
+}
+
+function showResult(r){
+  currentPick = r;
+  const distPart = (r.dist !== null && r.dist !== undefined) ? `\uB3C4\uBCF4 ${r.walkMin}\uBD84 \u00B7 ${r.dist}m` : `\uB3C4\uBCF4 ${r.walkMin}\uBD84`;
+  const ratingPart = (r.rating !== null && r.rating !== undefined) ? `★ ${Number(r.rating).toFixed(1)}` : '★ –';
+  resultTicket.classList.add('show');
+  resultWindow.textContent = `TICKET NO.${String(Math.floor(Math.random() * 900 + 100))}`;
+  resultName.innerHTML = `<a class="result-name-link" href="${mapUrlFor(r, 'naver')}" target="_blank" rel="noopener">${escapeHTML(CATS[r.cat]?.icon || '🍽')} ${escapeHTML(r.name)}</a> <span class="result-stamp pop">\uC120\uD0DD\uC644\uB8CC</span>`;
+  resultMeta.textContent = `${distPart} \u00B7 ${ratingPart}${r.addr ? ' \u00B7 ' + r.addr : ''}`;
+  resultFavBtn.style.display = 'inline-flex';
+  resultMenuBtn.style.display = 'inline-flex';
+  drawAgainBtn.style.display = 'inline-flex';
+  emptyNote.style.display = 'none';
+  resultFavBtn.classList.toggle('active', favorites.has(r.id));
+  resultFavBtn.textContent = favorites.has(r.id) ? '★ \uC990\uACA8\uCC3E\uAE30 \uC644\uB8CC' : '⭐ \uC990\uACA8\uCC3E\uAE30';
+  resultMenuPanel.classList.remove('show');
+  resultMenuPanel.setAttribute('aria-hidden', 'true');
+  resultMenuBtn.setAttribute('aria-expanded', 'false');
+  resultMenuBtn.textContent = '\uD83C\uDF7D \uB300\uD45C \uBA54\uB274 \uBCF4\uAE30';
+  resultMenuPanel.innerHTML = buildMenuThumbs(r);
+  render();
+}
+
+function pickRandom(){
+  const pool = getVisibleRecords();
+  resultTicket.classList.add('show');
+  if(!pool.length){
+    emptyNote.style.display = 'block';
+    resultWindow.textContent = '\uC120\uD0DD \uAC00\uB2A5\uD55C \uC2DD\uB2F9 \uC5C6\uC74C';
+    resultName.innerHTML = '';
+    resultMeta.textContent = '';
+    resultFavBtn.style.display = 'none';
+    resultMenuBtn.style.display = 'none';
+    resultMenuPanel.classList.remove('show');
+    resultMenuPanel.innerHTML = '';
+    drawAgainBtn.style.display = 'none';
+    return;
+  }
+  emptyNote.style.display = 'none';
+  resultFavBtn.style.display = 'inline-flex';
+  resultMenuBtn.style.display = 'inline-flex';
+  drawAgainBtn.style.display = 'inline-flex';
+
+  const final = pool[Math.floor(Math.random() * pool.length)];
+  if(reduceMotion){
+    showResult(final);
+    return;
+  }
+
+  drawBtn.disabled = true;
+  let i = 0;
+  const timer = setInterval(() => {
+    const temp = pool[Math.floor(Math.random() * pool.length)];
+    resultWindow.textContent = '\uCDA9\uC804 \uC911...';
+    resultName.innerHTML = `${CATS[temp.cat]?.icon || '🍽'} ${escapeHTML(temp.name)}`;
+    resultMeta.textContent = `\uB3C4\uBCF4 ${temp.walkMin}\uBD84`;
+    i += 1;
+    if(i > 9){
+      clearInterval(timer);
+      showResult(final);
+      drawBtn.disabled = false;
+    }
+  }, 60);
+}
+
+function bindModal(){
+  [fName, fAddr].forEach(el => el.addEventListener('input', updateMapLink));
+  if(mapSearchBtn){
+    mapSearchBtn.addEventListener('click', (e) => {
+      if(mapSearchBtn.classList.contains('disabled')) e.preventDefault();
+    });
+  }
+
+  addBtn.addEventListener('click', () => openModal('add'));
+  modalCancel.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', (e) => {
+    if(e.target === modalOverlay) closeModal();
+  });
+
+  restaurantForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = fName.value.trim();
+    const walkMin = parseInt(fWalk.value, 10);
+    if(!name || !walkMin || walkMin < 1) return;
+
+    const rating = fRating.value === '' ? null : parseFloat(fRating.value);
+    const base = editingId ? findRecord(editingId) : null;
+    const item = normalizeRecord({
+      id: editingId || `c${Date.now().toString(36)}`,
+      name,
+      cat: fCat.value,
+      walkMin,
+      rating,
+      addr: fAddr.value.trim(),
+      lat: base ? base.lat : null,
+      lng: base ? base.lng : null,
+      rc: base ? base.rc : null,
+      isCustom: base ? base.isCustom : !editingId,
+      isDeleted: false
+    });
+
+    try{
+      await saveRecord(item);
+      closeModal();
+      render();
+    }catch(err){
+      setStatus(`\uC800\uC7A5 \uC2E4\uD328: ${err.message}`);
+    }
+  });
+}
 
 function openModal(mode, id){
-  if(mode === "edit" && id){
-    const r = findRestaurant(id);
+  if(mode === 'edit' && id){
+    const r = findRecord(id);
     if(!r) return;
     editingId = id;
-    modalTitle.textContent = "식당 수정";
-    modalSubmit.textContent = "수정 완료";
+    modalTitle.textContent = '\uC2DD\uB2F9 \uC218\uC815';
+    modalSubmit.textContent = '\uC218\uC815 \uC644\uB8CC';
     fName.value = r.name;
     fCat.value = r.cat;
     fWalk.value = r.walkMin;
-    fRating.value = r.rating != null ? r.rating : "";
-    fAddr.value = r.addr || "";
+    fRating.value = r.rating !== null && r.rating !== undefined ? r.rating : '';
+    fAddr.value = r.addr || '';
   } else {
     editingId = null;
-    modalTitle.textContent = "식당 추가";
-    modalSubmit.textContent = "추가하기";
+    modalTitle.textContent = '\uC2DD\uB2F9 \uCD94\uAC00';
+    modalSubmit.textContent = '\uCD94\uAC00\uD558\uAE30';
     restaurantForm.reset();
-    fCat.value = "korean";
+    fCat.value = 'korean';
   }
-  updateMapSearchLink();
-  modalOverlay.classList.add("show");
+  updateMapLink();
+  modalOverlay.classList.add('show');
   fName.focus();
 }
 
 function closeModal(){
-  modalOverlay.classList.remove("show");
+  modalOverlay.classList.remove('show');
   editingId = null;
-  updateMapSearchLink();
+  updateMapLink();
 }
 
-addBtn.addEventListener("click", ()=> openModal("add"));
-modalCancel.addEventListener("click", closeModal);
-modalOverlay.addEventListener("click", (e)=>{
-  if(e.target === modalOverlay) closeModal();
-});
-
-restaurantForm.addEventListener("submit", (e)=>{
-  e.preventDefault();
-  const name = fName.value.trim();
-  const walkMin = parseInt(fWalk.value, 10);
-  if(!name || !walkMin || walkMin < 1) return;
-
-  const data = {
-    name,
-    cat: fCat.value,
-    walkMin,
-    rating: fRating.value !== "" ? parseFloat(fRating.value) : null,
-    addr: fAddr.value.trim() || null
-  };
-
-  if(editingId){
-    const customItem = custom.find(c=>c.id===editingId);
-    if(customItem){
-      emitAction({ type: 'saveCustom', id: editingId, data });
-    } else {
-      emitAction({ type: 'saveOverride', id: editingId, data });
-    }
-  } else {
-    emitAction({ type: 'addCustom', data });
+async function connectRemote(){
+  if(!isRemoteConfigured()){
+    remoteMode = false;
+    setStatus('\uB85C\uCEEC \uBAA8\uB4DC');
+    setFooterMessage();
+    render();
+    return;
   }
 
-  closeModal();
-});
+  try{
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    remoteMode = true;
+    setStatus('Supabase \uC5F0\uACB0 \uC911...');
 
-// ---------- 초기 실행 ----------
-buildChips();
-render();
+    const { data, error } = await supabaseClient.from(TABLE_NAME).select('*').order('created_at', { ascending: true });
+    if(error) throw error;
+
+    let rows = (data || []).map(normalizeRecord);
+    if(!rows.length){
+      setStatus('\uAE30\uBCF8 \uBAA9\uB85D \uC2DC\uB4DC \uC911...');
+      const seed = BASE_RESTAURANTS.map(r => ({
+        id: r.id,
+        name: r.name,
+        cat: r.cat,
+        walk_min: r.walkMin,
+        rating: r.rating,
+        rc: r.rc,
+        addr: r.addr,
+        lat: r.lat,
+        lng: r.lng,
+        is_custom: false,
+        is_deleted: false
+      }));
+      const seeded = await supabaseClient.from(TABLE_NAME).upsert(seed, { onConflict: 'id' });
+      if(seeded.error) throw seeded.error;
+      const reload = await supabaseClient.from(TABLE_NAME).select('*').order('created_at', { ascending: true });
+      if(reload.error) throw reload.error;
+      rows = (reload.data || []).map(normalizeRecord);
+    }
+
+    records = rows.sort(sortByTravel);
+    subscribeRemote();
+    connectBoardRemote();
+    setStatus('\uACF5\uC720 \uC911 \u00B7 \uC2E4\uC2DC\uAC04 \uB3D9\uAE30\uD654 \uC911');
+    setFooterMessage();
+    render();
+  }catch(err){
+    console.error(err);
+    remoteMode = false;
+    records = buildLocalRecords();
+    setStatus(`\uC5F0\uACB0 \uC2E4\uD328 \u00B7 \uB85C\uCEEC \uBAA8\uB4DC (${err.message})`);
+    setFooterMessage();
+    render();
+  }
+}
+
+function subscribeRemote(){
+  if(!supabaseClient) return;
+  if(supabaseChannel) supabaseClient.removeChannel(supabaseChannel);
+  supabaseChannel = supabaseClient.channel('restaurants-live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: TABLE_NAME }, payload => {
+      const row = payload.new || payload.old;
+      if(!row) return;
+      const item = normalizeRecord(row);
+      if(payload.eventType === 'DELETE'){
+        records = records.filter(r => r.id !== item.id);
+      } else {
+        const idx = records.findIndex(r => r.id === item.id);
+        if(idx >= 0) records[idx] = item; else records.push(item);
+      }
+      records.sort(sortByTravel);
+      render();
+    })
+    .subscribe(status => {
+      if(status === 'SUBSCRIBED') setStatus('\uACF5\uC720 \uC911 \u00B7 \uC2E4\uC2DC\uAC04 \uB3D9\uAE30\uD654 \uC911');
+    });
+}
+
+// ---------- 자유 메모 게시판 ----------
+function normalizeBoardNote(n){
+  return {
+    id: String(n.id),
+    restaurantId: n.restaurantId || n.restaurant_id || null,
+    name: n.name || "익명",
+    content: n.content || "",
+    passwordHash: n.passwordHash || n.password_hash || "",
+    createdAt: n.createdAt || n.created_at || new Date().toISOString(),
+    updatedAt: n.updatedAt || n.updated_at || n.createdAt || n.created_at || new Date().toISOString()
+  };
+}
+
+function loadBoardLocal(){
+  return loadJSON(LS_BOARD, []).map(normalizeBoardNote);
+}
+function saveBoardLocal(){
+  saveJSON(LS_BOARD, boardNotes);
+}
+
+function sortBoardNotes(){
+  boardNotes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+async function connectBoardRemote(){
+  if(!remoteMode || !supabaseClient) return;
+  try{
+    const { data, error } = await supabaseClient.from(BOARD_TABLE).select('*').order('created_at', { ascending: false });
+    if(error) throw error;
+    boardNotes = (data || []).map(normalizeBoardNote);
+    subscribeBoardRemote();
+    renderActiveBoard();
+  }catch(err){
+    console.error(err);
+    // 게시판 테이블이 아직 없거나 접근 권한이 없는 경우 로컬 모드로 동작
+    boardNotes = loadBoardLocal();
+    sortBoardNotes();
+    renderActiveBoard();
+  }
+}
+
+function subscribeBoardRemote(){
+  if(!supabaseClient) return;
+  if(boardChannel) supabaseClient.removeChannel(boardChannel);
+  boardChannel = supabaseClient.channel('board-notes-live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: BOARD_TABLE }, payload => {
+      const row = payload.new || payload.old;
+      if(!row) return;
+      const note = normalizeBoardNote(row);
+      if(payload.eventType === 'DELETE'){
+        boardNotes = boardNotes.filter(n => n.id !== note.id);
+      } else {
+        const idx = boardNotes.findIndex(n => n.id === note.id);
+        if(idx >= 0) boardNotes[idx] = note; else boardNotes.push(note);
+      }
+      sortBoardNotes();
+      renderActiveBoard();
+    })
+    .subscribe();
+}
+
+async function addBoardNote(name, content, password, restaurantId){
+  const passwordHash = await sha256Hex(password);
+  const note = normalizeBoardNote({
+    id: `n${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
+    restaurantId: restaurantId || null,
+    name,
+    content,
+    passwordHash,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+  if(remoteMode && supabaseClient){
+    const { error } = await supabaseClient.from(BOARD_TABLE).insert({
+      id: note.id, restaurant_id: note.restaurantId, name: note.name, content: note.content,
+      password_hash: note.passwordHash, created_at: note.createdAt, updated_at: note.updatedAt
+    });
+    if(error) throw error;
+    const idx = boardNotes.findIndex(n => n.id === note.id);
+    if(idx < 0) boardNotes.push(note);
+  } else {
+    boardNotes.push(note);
+    saveBoardLocal();
+  }
+  sortBoardNotes();
+}
+
+async function updateBoardNote(id, name, content){
+  const updatedAt = new Date().toISOString();
+  if(remoteMode && supabaseClient){
+    const { error } = await supabaseClient.from(BOARD_TABLE).update({ name, content, updated_at: updatedAt }).eq('id', id);
+    if(error) throw error;
+  }
+  const idx = boardNotes.findIndex(n => n.id === id);
+  if(idx >= 0){
+    boardNotes[idx] = Object.assign({}, boardNotes[idx], { name, content, updatedAt });
+  }
+  if(!remoteMode) saveBoardLocal();
+  sortBoardNotes();
+}
+
+async function deleteBoardNote(id){
+  if(remoteMode && supabaseClient){
+    const { error } = await supabaseClient.from(BOARD_TABLE).delete().eq('id', id);
+    if(error) throw error;
+  }
+  boardNotes = boardNotes.filter(n => n.id !== id);
+  if(!remoteMode) saveBoardLocal();
+}
+
+function boardItemHTML(n){
+  const isVerifying = boardVerifiedId === n.id;
+  const editedMark = n.updatedAt && n.updatedAt !== n.createdAt ? ' <span style="opacity:.7;">(수정됨)</span>' : '';
+  let verifyBlock = '';
+  if(isVerifying && boardVerifiedMode === 'ask'){
+    verifyBlock = `
+      <div class="board-verify" data-verify-for="${n.id}">
+        <input type="password" class="board-verify-input" placeholder="비밀번호 확인" data-id="${n.id}">
+        <button type="button" class="board-mini-btn confirm" data-action="board-confirm" data-id="${n.id}">확인</button>
+        <button type="button" class="board-mini-btn cancel" data-action="board-cancel" data-id="${n.id}">취소</button>
+      </div>`;
+  } else if(isVerifying && boardVerifiedMode === 'edit'){
+    verifyBlock = `
+      <textarea class="board-edit-area" data-id="${n.id}">${escapeHTML(n.content)}</textarea>
+      <div class="board-verify">
+        <button type="button" class="board-mini-btn confirm" data-action="board-save-edit" data-id="${n.id}">저장</button>
+        <button type="button" class="board-mini-btn cancel" data-action="board-cancel" data-id="${n.id}">취소</button>
+      </div>`;
+  }
+  return `
+  <div class="board-item" data-id="${n.id}">
+    <div class="board-item-head">
+      <span class="board-item-name">${escapeHTML(n.name)}</span>
+      <span class="board-item-time">${formatBoardTime(n.createdAt)}${editedMark}</span>
+    </div>
+    ${boardVerifiedMode === 'edit' && isVerifying ? '' : `<div class="board-item-content">${escapeHTML(n.content)}</div>`}
+    ${verifyBlock}
+    ${!isVerifying ? `
+    <div class="board-item-actions">
+      <button type="button" data-action="board-edit" data-id="${n.id}">수정</button>
+      <button type="button" data-action="board-del" data-id="${n.id}">삭제</button>
+    </div>` : ''}
+  </div>`;
+}
+
+function currentBoardNotes(){
+  return boardNotes.filter(n => (n.restaurantId || null) === (activeBoardScope || null));
+}
+
+function renderActiveBoard(){
+  if(!boardList) return;
+  const notes = currentBoardNotes();
+  if(!notes.length){
+    boardList.innerHTML = `<div class="board-empty">아직 남겨진 메모가 없어요.<br>첫 메모를 남겨보세요 📝</div>`;
+  } else {
+    boardList.innerHTML = notes.map(boardItemHTML).join("");
+  }
+
+  boardList.querySelectorAll('[data-action="board-edit"]').forEach(btn => btn.addEventListener('click', () => {
+    boardVerifiedId = btn.dataset.id;
+    boardVerifiedMode = 'ask';
+    boardList.dataset.pendingAction = 'edit';
+    renderActiveBoard();
+    focusVerifyInput(btn.dataset.id);
+  }));
+  boardList.querySelectorAll('[data-action="board-del"]').forEach(btn => btn.addEventListener('click', () => {
+    boardVerifiedId = btn.dataset.id;
+    boardVerifiedMode = 'ask';
+    boardList.dataset.pendingAction = 'delete';
+    renderActiveBoard();
+    focusVerifyInput(btn.dataset.id);
+  }));
+  boardList.querySelectorAll('[data-action="board-cancel"]').forEach(btn => btn.addEventListener('click', () => {
+    boardVerifiedId = null;
+    boardVerifiedMode = null;
+    renderActiveBoard();
+  }));
+  boardList.querySelectorAll('[data-action="board-confirm"]').forEach(btn => btn.addEventListener('click', () => confirmBoardPassword(btn.dataset.id)));
+  boardList.querySelectorAll('.board-verify-input').forEach(inp => inp.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){ e.preventDefault(); confirmBoardPassword(inp.dataset.id); }
+  }));
+  boardList.querySelectorAll('[data-action="board-save-edit"]').forEach(btn => btn.addEventListener('click', () => saveBoardEdit(btn.dataset.id)));
+}
+
+function focusVerifyInput(id){
+  requestAnimationFrame(() => {
+    const inp = boardList.querySelector(`.board-verify-input[data-id="${id}"]`);
+    if(inp) inp.focus();
+  });
+}
+
+async function confirmBoardPassword(id){
+  const inp = boardList.querySelector(`.board-verify-input[data-id="${id}"]`);
+  const pw = inp ? inp.value : '';
+  const note = boardNotes.find(n => n.id === id);
+  if(!note) return;
+  const hash = await sha256Hex(pw);
+  if(hash !== note.passwordHash){
+    showToast('비밀번호가 일치하지 않아요');
+    if(inp){ inp.value = ''; inp.focus(); }
+    return;
+  }
+  const pending = boardList.dataset.pendingAction;
+  if(pending === 'delete'){
+    try{
+      await deleteBoardNote(id);
+      boardVerifiedId = null;
+      boardVerifiedMode = null;
+      showToast('메모를 삭제했어요');
+      renderActiveBoard();
+    }catch(err){
+      showToast(`삭제 실패: ${err.message}`);
+    }
+  } else {
+    boardVerifiedMode = 'edit';
+    renderActiveBoard();
+  }
+}
+
+async function saveBoardEdit(id){
+  const area = boardList.querySelector(`.board-edit-area[data-id="${id}"]`);
+  const note = boardNotes.find(n => n.id === id);
+  if(!area || !note) return;
+  const newContent = area.value.trim();
+  if(!newContent) return;
+  try{
+    await updateBoardNote(id, note.name, newContent);
+    boardVerifiedId = null;
+    boardVerifiedMode = null;
+    showToast('메모를 수정했어요');
+    renderActiveBoard();
+  }catch(err){
+    showToast(`수정 실패: ${err.message}`);
+  }
+}
+
+// ---------- 식당 상세 정보 (드로어 안에 표시) ----------
+function restaurantInfoHTML(r){
+  const fav = favorites.has(r.id);
+  const cat = CATS[r.cat] || CATS.etc;
+  const mapUrl = mapUrlFor(r, 'naver');
+  const distText = (r.dist !== null && r.dist !== undefined) ? `도보 ${r.walkMin}분 · ${r.dist}m` : `도보 ${r.walkMin}분`;
+  const ratingText = (r.rating !== null && r.rating !== undefined) ? `★ ${Number(r.rating).toFixed(1)}${r.rc ? ' (' + r.rc + ')' : ''}` : '★ –';
+  return `
+    <div class="rd-cat-row">
+      <span class="card-cat" style="margin:0;">${cat.icon} ${cat.label}${r.isCustom ? '<span class="custom-tag">직접추가</span>' : ''}</span>
+      <button class="star-btn ${fav ? 'active' : ''}" data-action="rd-fav" data-id="${r.id}" aria-label="즐겨찾기">${fav ? '★' : '☆'}</button>
+    </div>
+    <a class="rd-name-link" href="${mapUrl}" target="_blank" rel="noopener" aria-label="${escapeHTML(r.name)} 지도 열기">
+      <div class="rd-name">${escapeHTML(r.name)}</div>
+    </a>
+    <div class="rd-meta">${distText} · ${ratingText}${r.addr ? ' · ' + escapeHTML(r.addr) : ''}</div>
+    <div class="rd-menu"><div class="menu-panel show" style="width:100%;">${buildMenuThumbs(r)}</div></div>
+    <div class="rd-actions">
+      <button class="ticket-btn" data-action="rd-pick" data-id="${r.id}">🎫 오늘 메뉴로 선택</button>
+      <button class="pill-btn" data-action="rd-edit" data-id="${r.id}">✏️ 수정</button>
+      <button class="pill-btn" data-action="rd-del" data-id="${r.id}">🗑 삭제</button>
+    </div>`;
+}
+
+function bindRestaurantInfoActions(){
+  const id = activeDrawerRestaurantId;
+  if(!id) return;
+  const favBtn = rdInfo.querySelector('[data-action="rd-fav"]');
+  if(favBtn) favBtn.addEventListener('click', () => { toggleFav(id); openRestaurantDrawer(id); });
+  const pickBtn = rdInfo.querySelector('[data-action="rd-pick"]');
+  if(pickBtn) pickBtn.addEventListener('click', () => {
+    const r = findRecord(id);
+    if(r) showResult(r);
+    closeBoard();
+  });
+  const editBtn = rdInfo.querySelector('[data-action="rd-edit"]');
+  if(editBtn) editBtn.addEventListener('click', () => { closeBoard(); openModal('edit', id); });
+  const delBtn = rdInfo.querySelector('[data-action="rd-del"]');
+  if(delBtn) delBtn.addEventListener('click', () => { deleteItem(id); closeBoard(); });
+}
+
+function openDrawer(){
+  boardOverlay.classList.add('show');
+  boardDrawer.classList.add('show');
+  boardDrawer.setAttribute('aria-hidden', 'false');
+}
+
+function openGeneralBoard(){
+  activeBoardScope = null;
+  activeDrawerRestaurantId = null;
+  boardTitle.textContent = '📝 자유 메모';
+  boardSubtitle.textContent = '없는 맛집 제보, 하고 싶은 말을 익명으로 남겨보세요.';
+  rdInfo.style.display = 'none';
+  rdInfo.innerHTML = '';
+  boardNotesTitle.style.display = 'none';
+  boardVerifiedId = null;
+  boardVerifiedMode = null;
+  renderActiveBoard();
+  openDrawer();
+  setTimeout(() => boardName.focus(), 260);
+}
+
+function openRestaurantDrawer(id){
+  const r = findRecord(id);
+  if(!r) return;
+  const cat = CATS[r.cat] || CATS.etc;
+  activeBoardScope = id;
+  activeDrawerRestaurantId = id;
+  boardTitle.textContent = `${cat.icon} ${r.name}`;
+  boardSubtitle.textContent = '식당 정보와 이 식당에 대한 메모를 확인하세요.';
+  rdInfo.style.display = 'flex';
+  rdInfo.innerHTML = restaurantInfoHTML(r);
+  bindRestaurantInfoActions();
+  boardNotesTitle.style.display = 'block';
+  boardVerifiedId = null;
+  boardVerifiedMode = null;
+  renderActiveBoard();
+  openDrawer();
+  boardScroll.scrollTop = 0;
+}
+
+function closeBoard(){
+  boardOverlay.classList.remove('show');
+  boardDrawer.classList.remove('show');
+  boardDrawer.setAttribute('aria-hidden', 'true');
+  boardVerifiedId = null;
+  boardVerifiedMode = null;
+}
+
+function bindBoard(){
+  boardClose.addEventListener('click', closeBoard);
+  boardOverlay.addEventListener('click', closeBoard);
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && boardDrawer.classList.contains('show')) closeBoard();
+  });
+  boardForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = boardName.value.trim();
+    const pw = boardPw.value;
+    const content = boardContent.value.trim();
+    if(!name || !pw || !content) return;
+    try{
+      await addBoardNote(name, content, pw, activeBoardScope);
+      boardContent.value = '';
+      boardPw.value = '';
+      renderActiveBoard();
+      showToast('메모를 남겼어요');
+    }catch(err){
+      showToast(`등록 실패: ${err.message}`);
+    }
+  });
+}
+
+function bindOfficeBar(){
+  if(!officeTabs) return;
+  officeTabs.querySelectorAll('.office-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(btn.classList.contains('current')) return;
+      showToast('Coming soon..');
+    });
+  });
+}
+
+// ---------- 초기화 ----------
+function init(){
+  fCat.innerHTML = Object.entries(CATS).map(([k, v]) => `<option value="${k}">${v.icon} ${v.label}</option>`).join('');
+  buildChips();
+  bindModal();
+  setFooterMessage();
+  if(sortSelect){
+    sortSelect.value = sortMode;
+    sortSelect.addEventListener('change', () => {
+      sortMode = sortSelect.value;
+      localStorage.setItem(LS_SORT, sortMode);
+      render();
+    });
+  }
+
+  resultFavBtn.addEventListener('click', () => {
+    if(!currentPick) return;
+    toggleFav(currentPick.id);
+    showResult(currentPick);
+  });
+  resultMenuBtn.addEventListener('click', () => {
+    if(!currentPick) return;
+    const open = resultMenuPanel.classList.toggle('show');
+    resultMenuBtn.setAttribute('aria-expanded', String(open));
+    resultMenuPanel.setAttribute('aria-hidden', String(!open));
+    resultMenuBtn.textContent = open ? '\uD83C\uDF7D \uB300\uD45C \uBA54\uB274 \uB2EB\uAE30' : '\uD83C\uDF7D \uB300\uD45C \uBA54\uB274 \uBCF4\uAE30';
+    if(open && !resultMenuPanel.innerHTML){
+      resultMenuPanel.innerHTML = buildMenuThumbs(currentPick);
+    }
+  });
+  drawBtn.addEventListener('click', pickRandom);
+  drawAgainBtn.addEventListener('click', pickRandom);
+  favToggle.addEventListener('click', () => {
+    favOnly = !favOnly;
+    favToggle.classList.toggle('active', favOnly);
+    render();
+  });
+
+  bindBoard();
+  bindOfficeBar();
+  boardNotes = loadBoardLocal();
+  sortBoardNotes();
+
+  records = buildLocalRecords();
+  render();
+  if(isRemoteConfigured()){
+    connectRemote();
+  } else {
+    setStatus('\uB85C\uCEEC \uBAA8\uB4DC');
+  }
+}
+
+init();
+
 </script>
 </body>
 </html>
